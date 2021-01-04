@@ -3,8 +3,6 @@
 
 class ShoppingListItem
 {
-    private static $nextId = 0;
-
     public $id;
     public $name;
     public $amount;
@@ -20,8 +18,5 @@ class ShoppingListItem
         $this->name = $name;
         $this->amount = $amount;
         $this->order = 0;
-
-        $this->id = self::$nextId;
-        self::$nextId++;
     }
 }

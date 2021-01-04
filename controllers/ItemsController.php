@@ -18,15 +18,16 @@ class ItemsController
         return ["ok" => "true"];
     }
 
-    public function updateItem($id, $newAmount)
+    public function postItemUpdate($id, $newAmount)
     {
-        $item = Storage::getById($id);
+        Storage::updateAmount(intval($id), intval($newAmount));
         return ["ok" => "true"];
     }
 
     public function deleteItem($id)
     {
-        $item = Storage::getById($id);
+        $numericId = intval($id);
+        Storage::deleteById($numericId);
         return ["ok" => "true"];
     }
 }

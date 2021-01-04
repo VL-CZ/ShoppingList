@@ -2,6 +2,18 @@
 
 class Router
 {
+    private $requestParamArrays = [];
+
+    /**
+     * Router constructor.
+     */
+    public function __construct()
+    {
+        $this->requestParamArrays['GET'] = $_GET;
+        $this->requestParamArrays['POST'] = $_POST;
+        $this->requestParamArrays['DELETE'] = $_GET;
+    }
+
     private function validatePathItems($pathItems)
     {
         $pattern = '/^[a-zA-Z_]+$/';
@@ -33,13 +45,10 @@ class Router
         return $param . 'Controller';
     }
 
-    private function getMethodName($isGetRequest, $pathItems)
+    private function getMethodName($requestMethod, $pathItems)
     {
         $lastItem = array_pop($pathItems);
-        if ($isGetRequest)
-            return "get$lastItem";
-        else
-            return "post$lastItem";
+        return strtolower($requestMethod) . $lastItem;
     }
 
     private function getData($instance, $methodName, $argsArray)
@@ -52,7 +61,7 @@ class Router
         {
             if (isset($argsArray[$arg->name]))
             {
-                $methodArgs[$arg->name] = $_REQUEST[$arg->name];
+                $methodArgs[$arg->name] = $argsArray[$arg->name];
             }
             else
             {
@@ -109,12 +118,7 @@ class Router
     public function dispatch()
     {
         $array = $_GET;
-        $isGetRequest = true;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST')
-        {
-            $isGetRequest = false;
-        }
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         $action = $array['action'];
         $pathItems = explode('/', $action);
@@ -128,12 +132,12 @@ class Router
 
         $fileName = $this->getFileName($pathItems);
         $className = $this->getClassName($pathItems);
-        $methodName = $this->getMethodName($isGetRequest, $pathItems);
+        $methodName = $this->getMethodName($requestMethod, $pathItems);
 
         if ($this->actionExists($fileName, $className, $methodName))
         {
             $instance = new $className();
-            $argsArray = $isGetRequest ? $_GET : $_POST;
+            $argsArray = $this->requestParamArrays[$requestMethod];
             $this->returnResponse($argsArray, $instance, $methodName);
         }
         else

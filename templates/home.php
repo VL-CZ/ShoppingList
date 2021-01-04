@@ -12,20 +12,22 @@
                 <th>Item</th>
                 <th>Amount</th>
                 <th></th>
-                <th></th>
             </tr>
         </table>
     </div>
 
-    <?php
-    $i = 10;
-    echo("Hello world" . $i);
-
-    ?>
+    <table>
+        <?php
+        foreach ($items as $item)
+        {
+            echo("<tr><td>$item->name</td><td>$item->amount</td></tr>");
+        }
+        ?>
+    </table>
 
     <h3>Add item</h3>
-    <form method="post" action=".">
-        <input type="text" name="item"/>
+    <form method="post" action="?action=Items/Item">
+        <input type="text" name="name"/>
         <input type="number" name="amount"/>
         <input type="submit" value="Submit"/>
     </form>

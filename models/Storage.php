@@ -4,14 +4,16 @@
 class Storage
 {
     private static $fileName = __DIR__ . '/data.json';
-    private static $nextId = 1;
 
     private static function addId($item)
     {
         $items = self::loadData();
         $last = end($items);
 
-        $item->id = $last->id + 1;
+        if (is_null($last))
+            $item->id = 1;
+        else
+            $item->id = $last->id + 1;
     }
 
     private static function loadData()

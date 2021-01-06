@@ -3,6 +3,7 @@
 class Router
 {
     private $requestParamArrays = [];
+    private $homePageAddress = '?action=Items/Items';
 
     /**
      * Router constructor.
@@ -115,10 +116,26 @@ class Router
         }
     }
 
+    private function isHomePageRequest()
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'GET' && empty($_GET);
+    }
+
+    private function redirectToHomepage()
+    {
+        header("Location: $this->homePageAddress", 303);
+        exit();
+    }
+
     public function dispatch()
     {
         $array = $_GET;
         $requestMethod = $_SERVER['REQUEST_METHOD'];
+
+        if ($this->isHomePageRequest())
+        {
+            $this->redirectToHomepage();
+        }
 
         $action = $array['action'];
         $pathItems = explode('/', $action);

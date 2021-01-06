@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Shopping List</title>
+    <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
     <script src="../scripts/script.js"></script>
 </head>
 <body>
@@ -31,6 +32,15 @@
             }
             ?>
         </table>
+    </div>
+
+    <div class="hidden" id="editItemForm">
+        <h3>Editing item</h3>
+        <form method="post" action="?action=Items/Item">
+            <input type="text" name="name"/>
+            <input type="number" name="newAmount"/>
+            <input type="submit" value="Submit"/>
+        </form>
     </div>
 
     <h3>Add item</h3>

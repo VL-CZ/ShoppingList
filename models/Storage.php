@@ -73,4 +73,10 @@ class Storage
         }
         self::storeData($items);
     }
+
+
+    public static function changeOrder($id, $direction)
+    {
+
+    }
 }

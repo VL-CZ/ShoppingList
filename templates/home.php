@@ -15,6 +15,8 @@
                 <th>Amount</th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
 
             <?php
@@ -25,6 +27,13 @@
                 <tr>
                     <td><?= htmlspecialchars($item->name) ?></td>
                     <td><?= htmlspecialchars($item->amount) ?></td>
+                    <td>
+                        <button class="moveItemUpButton" data-id="<?= htmlspecialchars($item->id) ?>">MOVE UP</button>
+                    </td>
+                    <td>
+                        <button class="moveItemDownButton" data-id="<?= htmlspecialchars($item->id) ?>">MOVE DOWN
+                        </button>
+                    </td>
                     <td>
                         <button class="editItemButton" data-id="<?= htmlspecialchars($item->id) ?>">UPDATE</button>
                     </td>
@@ -50,7 +59,19 @@
 
     <h3>Add item</h3>
     <form method="post" action="?action=Items/Item">
-        <input type="text" name="name"/>
+        <input type="text" name="name" list="itemsDatalist"/>
+        <datalist id="itemsDatalist">
+            <?php
+            foreach ($items as $item)
+            {
+            ?>
+
+                <option value="<?= htmlspecialchars($item->name) ?>">
+
+                <?php
+                }
+                ?>
+        </datalist>
         <input type="number" name="amount"/>
         <input type="submit" value="Submit"/>
     </form>

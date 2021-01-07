@@ -16,10 +16,36 @@ class Storage
             $item->id = $last->id + 1;
     }
 
+    private static function addOrder($item)
+    {
+        $items = self::getSortedData();
+        $last = end($items);
+
+        if (is_null($last))
+            $item->order = 1;
+        else
+            $item->order = $last->order + 1;
+    }
+
     private static function loadData()
     {
         $data = file_get_contents(self::$fileName);
         return json_decode($data);
+    }
+
+    private static function getSortedData()
+    {
+        $data = self::loadData();
+        usort($data, function ($a, $b)
+        {
+            if ($a->order === $b->order)
+            {
+                return 0;
+            }
+            return ($a->order < $b->order) ? -1 : 1;
+        });
+
+        return $data;
     }
 
     private static function storeData($items)
@@ -30,7 +56,7 @@ class Storage
 
     public static function getAll()
     {
-        return self::loadData();
+        return self::getSortedData();
     }
 
     public static function getById($id)
@@ -49,6 +75,7 @@ class Storage
     {
         $items = self::loadData();
         self::addId($item);
+        self::addOrder($item);
         array_push($items, $item);
         self::storeData($items);
     }

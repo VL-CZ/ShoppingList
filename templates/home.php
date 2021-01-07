@@ -28,11 +28,18 @@
                     <td><?= htmlspecialchars($item->name) ?></td>
                     <td><?= htmlspecialchars($item->amount) ?></td>
                     <td>
-                        <button class="moveItemUpButton" data-id="<?= htmlspecialchars($item->id) ?>">MOVE UP</button>
+                        <form method="post" action="?action=Items/MoveItem">
+                            <input type="hidden" name="id" value="<?=htmlspecialchars($item->id)?>">
+                            <input type="hidden" name="direction" value="up">
+                            <input type="submit" value="MOVE UP">
+                        </form>
                     </td>
                     <td>
-                        <button class="moveItemDownButton" data-id="<?= htmlspecialchars($item->id) ?>">MOVE DOWN
-                        </button>
+                        <form method="post" action="?action=Items/MoveItem">
+                            <input type="hidden" name="id" value="<?=htmlspecialchars($item->id)?>">
+                            <input type="hidden" name="direction" value="down">
+                            <input type="submit" value="MOVE DOWN">
+                        </form>
                     </td>
                     <td>
                         <button class="editItemButton" data-id="<?= htmlspecialchars($item->id) ?>">UPDATE</button>
@@ -66,7 +73,7 @@
             {
             ?>
 
-                <option value="<?= htmlspecialchars($item->name) ?>">
+            <option value="<?= htmlspecialchars($item->name) ?>">
 
                 <?php
                 }

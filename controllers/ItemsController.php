@@ -30,4 +30,10 @@ class ItemsController
         Storage::deleteById($numericId);
         return ["ok" => "true"];
     }
+
+    public function postMoveItem($id, $direction)
+    {
+        Storage::move(intval($id), $direction);
+        return ["ok" => "true"];
+    }
 }

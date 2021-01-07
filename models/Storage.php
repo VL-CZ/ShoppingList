@@ -59,12 +59,22 @@ class Storage
         return self::getSortedData();
     }
 
-    public static function getById($id)
+    public static function getById($items, $id)
     {
-        $items = self::loadData();
         foreach ($items as $item)
         {
             if ($item->id === $id)
+                return $item;
+        }
+
+        return null;
+    }
+
+    public static function getByOrder($items, $order)
+    {
+        foreach ($items as $item)
+        {
+            if ($item->order === $order)
                 return $item;
         }
 
@@ -104,8 +114,34 @@ class Storage
     }
 
 
-    public static function changeOrder($id, $direction)
+    public static function move($id, $direction)
     {
+        $items = self::loadData();
 
+        $item = self::getById($items, $id);
+        $order = $item->order;
+        $secondItem = null;
+
+        $downString = "down";
+        $upString = "up";
+
+        $newOrder = $order;
+        if ($direction === $upString)
+        {
+            $newOrder--;
+        }
+        else if ($direction === $downString)
+        {
+            $newOrder++;
+        }
+
+        $secondItem = self::getByOrder($items, $newOrder);
+        if (!is_null($secondItem))
+        {
+            $item->order = $newOrder;
+            $secondItem->order = $order;
+        }
+
+        self::storeData($items);
     }
 }

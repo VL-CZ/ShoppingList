@@ -1,4 +1,6 @@
 const apiUrl = "http://localhost/";
+const hiddenClassName = "hidden";
+let editForm;
 
 function getDeleteApiUrlById(id)
 {
@@ -19,14 +21,40 @@ function addDeleteItemEventToButton(button)
     })
 }
 
+function addUpdateItemEventToButton(button)
+{
+    const itemId = button.getAttribute("data-id");
+    const editFormId = document.getElementById("editItemId");
+
+    button.addEventListener('click', function () {
+        editFormId.value = itemId;
+        if (editForm.classList.contains(hiddenClassName))
+        {
+            editForm.classList.remove(hiddenClassName);
+        }
+    });
+}
+
 function main()
 {
+    editForm = document.getElementById("editItemForm");
+
     const deleteButtons = document.getElementsByClassName("deleteItemButton");
     for (const button of deleteButtons)
     {
         addDeleteItemEventToButton(button);
     }
 
+    const updateButtons = document.getElementsByClassName("editItemButton");
+    for (const button of updateButtons)
+    {
+        addUpdateItemEventToButton(button);
+    }
+
+    const cancelEditButton = document.getElementById("cancelEditButton");
+    cancelEditButton.addEventListener('click', function () {
+        editForm.classList.add(hiddenClassName);
+    });
 }
 
 window.onload = function () {

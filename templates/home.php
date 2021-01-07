@@ -14,6 +14,7 @@
                 <th>Item</th>
                 <th>Amount</th>
                 <th></th>
+                <th></th>
             </tr>
 
             <?php
@@ -25,6 +26,9 @@
                     <td><?= htmlspecialchars($item->name) ?></td>
                     <td><?= htmlspecialchars($item->amount) ?></td>
                     <td>
+                        <button class="editItemButton" data-id="<?= htmlspecialchars($item->id) ?>">UPDATE</button>
+                    </td>
+                    <td>
                         <button class="deleteItemButton" data-id="<?= htmlspecialchars($item->id) ?>">DELETE</button>
                     </td>
                 </tr>
@@ -34,13 +38,14 @@
         </table>
     </div>
 
-    <div class="hidden" id="editItemForm">
+    <div id="editItemForm" class="hidden">
         <h3>Editing item</h3>
-        <form method="post" action="?action=Items/Item">
-            <input type="text" name="name"/>
+        <form method="post" action="?action=Items/ItemUpdate">
+            <input type="hidden" name="id" id="editItemId"/>
             <input type="number" name="newAmount"/>
             <input type="submit" value="Submit"/>
         </form>
+        <button id="cancelEditButton">Cancel</button>
     </div>
 
     <h3>Add item</h3>

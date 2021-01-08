@@ -93,11 +93,13 @@ class Router
                 // redirect to selected page
                 $this->redirectTo($data);
             }
-            else
+            else if ($responseModel->isJson())
             {
                 // return JSON data
                 echo json_encode($data);
             }
+            else
+                throw new Exception("Invalid return type");
         }
         catch (Exception $exception)
         {

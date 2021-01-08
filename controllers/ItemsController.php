@@ -30,7 +30,7 @@ class ItemsController
     {
         $numericId = intval($id);
         Storage::deleteById($numericId);
-        return new JsonOkResponseModel(["ok" => "true"]);
+        return new JsonOkResponseModel(null);
     }
 
     public function postMoveItem($id, $direction)

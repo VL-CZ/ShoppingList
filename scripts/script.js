@@ -2,6 +2,8 @@ const apiUrl = "http://localhost/";
 const deleteItemUrl = apiUrl + "?action=Items/Item&id=";
 const hiddenClassName = "hidden";
 let editForm;
+let editItemName;
+let editItemAmount;
 
 function getDeleteApiUrlById(id)
 {
@@ -41,20 +43,31 @@ function addUpdateItemEventToButton(button)
 {
     const itemId = button.getAttribute("data-id");
     const editFormId = document.getElementById("editItemId");
+    const itemRowId = `itemsRow${itemId}`;
 
     button.addEventListener('click', function ()
     {
         editFormId.value = itemId;
+
+        // display edit form
         if (editForm.classList.contains(hiddenClassName))
         {
             editForm.classList.remove(hiddenClassName);
         }
+
+        // set additional properties
+        const itemName = document.getElementById(itemRowId + "name");
+        const itemAmount = document.getElementById(itemRowId + "amount");
+        editItemName.innerText = itemName.innerText;
+        editItemAmount.innerText = itemAmount.innerText;
     });
 }
 
 function main()
 {
     editForm = document.getElementById("editItemForm");
+    editItemAmount = document.getElementById("editItemAmount");
+    editItemName = document.getElementById("editItemName");
 
     const deleteButtons = document.getElementsByClassName("deleteItemButton");
     for (const button of deleteButtons)

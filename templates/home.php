@@ -24,11 +24,13 @@
             {
                 $itemId = $item->id;
                 $rowId = 'itemsRow' . $itemId;
+                $nameCellId = $rowId . 'name';
+                $amountCellId = $rowId . 'amount';
                 ?>
 
                 <tr id="<?= htmlspecialchars($rowId) ?>">
-                    <td><?= htmlspecialchars($item->name) ?></td>
-                    <td><?= htmlspecialchars($item->amount) ?></td>
+                    <td id="<?= htmlspecialchars($nameCellId) ?>"><?= htmlspecialchars($item->name) ?></td>
+                    <td id="<?= htmlspecialchars($amountCellId) ?>"><?= htmlspecialchars($item->amount) ?></td>
                     <td>
                         <form method="post" action="?action=Items/MoveItem">
                             <input type="hidden" name="id" value="<?= htmlspecialchars($itemId) ?>">
@@ -58,6 +60,8 @@
 
     <div id="editItemForm" class="hidden">
         <h3>Editing item</h3>
+        <div id="editItemName"></div>
+        <div>old amount: <span id="editItemAmount"></span></div>
         <form method="post" action="?action=Items/ItemUpdate">
             <input type="hidden" name="id" id="editItemId"/>
             <input type="number" name="newAmount"/>
@@ -71,7 +75,9 @@
         <input type="text" name="name" list="itemsDatalist"/>
         <datalist id="itemsDatalist">
             <?php
-            foreach ($items as $item)
+            foreach ($items
+
+            as $item)
             {
             ?>
 

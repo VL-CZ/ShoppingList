@@ -22,21 +22,23 @@
             <?php
             foreach ($items as $item)
             {
+                $itemId = $item->id;
+                $rowId = 'itemsRow' . $itemId;
                 ?>
 
-                <tr>
+                <tr id="<?= htmlspecialchars($rowId) ?>">
                     <td><?= htmlspecialchars($item->name) ?></td>
                     <td><?= htmlspecialchars($item->amount) ?></td>
                     <td>
                         <form method="post" action="?action=Items/MoveItem">
-                            <input type="hidden" name="id" value="<?=htmlspecialchars($item->id)?>">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($itemId) ?>">
                             <input type="hidden" name="direction" value="up">
                             <input type="submit" value="MOVE UP">
                         </form>
                     </td>
                     <td>
                         <form method="post" action="?action=Items/MoveItem">
-                            <input type="hidden" name="id" value="<?=htmlspecialchars($item->id)?>">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($item->id) ?>">
                             <input type="hidden" name="direction" value="down">
                             <input type="submit" value="MOVE DOWN">
                         </form>

@@ -12,12 +12,27 @@ function addDeleteItemEventToButton(button)
 {
     const itemId = button.getAttribute("data-id");
     const deleteItemUrl = getDeleteApiUrlById(itemId);
-    button.addEventListener('click', function () {
+    const itemRowId = `itemsRow${itemId}`;
+    const itemRow = document.getElementById(itemRowId);
+
+    button.addEventListener('click', function ()
+    {
         fetch(deleteItemUrl, {method: 'DELETE'})
             .then(response => response.json())
-            .then(result => {
-                alert(result.ok);
-                location.reload();
+            .then(result =>
+            {
+                if (result.ok)
+                {
+                    itemRow.remove();
+                }
+                else
+                {
+                    alert("An error occurred while deleting item");
+                }
+            })
+            .catch(result =>
+            {
+                alert("can't reach API");
             });
     })
 }
@@ -27,7 +42,8 @@ function addUpdateItemEventToButton(button)
     const itemId = button.getAttribute("data-id");
     const editFormId = document.getElementById("editItemId");
 
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function ()
+    {
         editFormId.value = itemId;
         if (editForm.classList.contains(hiddenClassName))
         {
@@ -53,11 +69,13 @@ function main()
     }
 
     const cancelEditButton = document.getElementById("cancelEditButton");
-    cancelEditButton.addEventListener('click', function () {
+    cancelEditButton.addEventListener('click', function ()
+    {
         editForm.classList.add(hiddenClassName);
     });
 }
 
-window.onload = function () {
+window.onload = function ()
+{
     main();
 };

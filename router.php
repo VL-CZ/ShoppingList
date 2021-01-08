@@ -78,7 +78,9 @@ class Router
     {
         try
         {
-            $data = $this->getData($instance, $methodName, $argsArray);
+            $responseModel = $this->getData($instance, $methodName, $argsArray);
+
+            $data = $responseModel->getData();
 
             // no data
             if (is_null($data))
@@ -86,13 +88,14 @@ class Router
                 http_response_code(204);
             }
             // redirect response
-            else if ($data->isRedirect())
+            else if ($responseModel->isRedirect())
             {
-                $targetPage = $data->getData();
-                $this->redirectTo($targetPage);
+                // redirect to selected page
+                $this->redirectTo($data);
             }
             else
             {
+                // return JSON data
                 echo json_encode($data);
             }
         }

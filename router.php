@@ -3,7 +3,7 @@
 class Router
 {
     private $requestParamArrays = [];
-    private $homePageAddress = '?action=Items/Items';
+    public static $homePageAddress = '?action=Items/Items';
 
     /**
      * Router constructor.
@@ -79,10 +79,22 @@ class Router
         try
         {
             $data = $this->getData($instance, $methodName, $argsArray);
+
+            // no data
             if (is_null($data))
+            {
                 http_response_code(204);
+            }
+            // redirect response
+            else if ($data->isRedirect())
+            {
+                $targetPage = $data->getData();
+                $this->redirectTo($targetPage);
+            }
             else
+            {
                 echo json_encode($data);
+            }
         }
         catch (Exception $exception)
         {
@@ -121,9 +133,9 @@ class Router
         return $_SERVER['REQUEST_METHOD'] === 'GET' && empty($_GET);
     }
 
-    private function redirectToHomepage()
+    private function redirectTo($page)
     {
-        header("Location: $this->homePageAddress", 303);
+        header("Location: $page", 303);
         exit();
     }
 
@@ -132,9 +144,10 @@ class Router
         $array = $_GET;
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+        // redirect to home
         if ($this->isHomePageRequest())
         {
-            $this->redirectToHomepage();
+            $this->redirectTo(self::$homePageAddress);
         }
 
         $action = $array['action'];

@@ -1,10 +1,11 @@
 const apiUrl = "http://localhost/";
+const deleteItemUrl = apiUrl + "?action=Items/Item&id=";
 const hiddenClassName = "hidden";
 let editForm;
 
 function getDeleteApiUrlById(id)
 {
-    return apiUrl + "?action=Items/Item&id=" + id;
+    return deleteItemUrl + id;
 }
 
 function addDeleteItemEventToButton(button)

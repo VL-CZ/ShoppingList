@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Shopping List</title>
-    <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
-    <script src="../scripts/script.js"></script>
+    <link rel="stylesheet" href="styles/style.css" type="text/css"/>
+    <script src="scripts/script.js"></script>
 </head>
 <body>
     <h2>Shopping list</h2>

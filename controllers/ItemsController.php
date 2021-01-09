@@ -7,35 +7,39 @@ require_once __DIR__ . '/../models/Repository.php';
 
 class ItemsController
 {
-    private $listItemsRepository;
+    private $listRepository;
+    private $itemsRepository;
 
     /**
      * ItemsController constructor
      */
     public function __construct()
     {
-        $this->listItemsRepository = new ListItemsRepository();
+        $this->listRepository = new ListItemsRepository();
+        $this->itemsRepository = new ItemsRepository();
     }
 
 
     public function getItems()
     {
-        (new ListItemsRepository())->getAll();
-        $items = Storage::getAll();
+        $items = $this->listRepository->getAll();
         require __DIR__ . '/../templates/home.php';
         die();
     }
 
     public function postItem($name, $amount)
     {
-        $item = new ShoppingListItem($name, $amount);
-        Storage::add($item);
+        $listItem = new ShoppingListItem(0, $name, intval($amount), 0);
+
+        $this->itemsRepository->tryToAddName($name);
+        $this->listRepository->add($listItem);
+
         return new RedirectResponseModel(Router::$homePageAddress);
     }
 
     public function postItemUpdate($id, $newAmount)
     {
-        Storage::updateAmount(intval($id), intval($newAmount));
+        $this->listRepository->updateAmount(intval($id), intval($newAmount));
         return new RedirectResponseModel(Router::$homePageAddress);
     }
 
@@ -43,7 +47,7 @@ class ItemsController
     {
         try
         {
-            $this->listItemsRepository->deleteById($id);
+            $this->listRepository->deleteById(intval($id));
             return new JsonOkResponseModel(null);
         }
         catch (Exception $e)

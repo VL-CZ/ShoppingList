@@ -1,6 +1,7 @@
-const apiUrl = "http://localhost/";
-const deleteItemUrl = apiUrl + "?action=Items/Item&id=";
 const hiddenClassName = "hidden";
+
+let apiUrl;
+let deleteItemUrl;
 let editForm;
 let editItemName;
 let editItemAmount;
@@ -65,6 +66,9 @@ function addUpdateItemEventToButton(button)
 
 function main()
 {
+    apiUrl = location.origin + location.pathname;
+    deleteItemUrl = apiUrl + "?action=List/Item&id=";
+
     editForm = document.getElementById("editItemForm");
     editItemAmount = document.getElementById("editItemAmount");
     editItemName = document.getElementById("editItemName");

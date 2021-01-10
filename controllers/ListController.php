@@ -26,6 +26,8 @@ class ListController
 
         $this->sortByPosition($listItems);
 
+        $allItems = $this->itemsRepository->getAll();
+
         require __DIR__ . '/../templates/home.php';
         die();
     }

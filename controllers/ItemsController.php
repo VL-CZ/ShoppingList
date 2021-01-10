@@ -22,7 +22,10 @@ class ItemsController
 
     public function getItems()
     {
-        $items = $this->listRepository->getAll();
+        $listItems = $this->listRepository->getAll();
+
+        $this->sortByPosition($listItems);
+
         require __DIR__ . '/../templates/home.php';
         die();
     }
@@ -60,5 +63,17 @@ class ItemsController
     {
         Storage::move(intval($id), $direction);
         return new RedirectResponseModel(Router::$homePageAddress);
+    }
+
+    private function sortByPosition(&$data)
+    {
+        usort($data, function ($a, $b)
+        {
+            if ($a->position === $b->position)
+            {
+                return 0;
+            }
+            return ($a->position < $b->position) ? -1 : 1;
+        });
     }
 }

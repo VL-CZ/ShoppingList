@@ -20,7 +20,7 @@
             </tr>
 
             <?php
-            foreach ($items as $item)
+            foreach ($listItems as $item)
             {
                 $itemId = $item->id;
                 $rowId = 'itemsRow' . $itemId;

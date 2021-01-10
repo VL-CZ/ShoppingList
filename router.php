@@ -3,7 +3,7 @@
 class Router
 {
     private $requestParamArrays = [];
-    public static $homePageAddress = '?action=Items/Items';
+    public static $homePageAddress = '?action=List/Items';
 
     /**
      * Router constructor.

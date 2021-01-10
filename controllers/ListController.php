@@ -5,7 +5,7 @@ require_once __DIR__ . '/../models/ResponseModel.php';
 require_once __DIR__ . '/../router.php';
 require_once __DIR__ . '/../models/Repository.php';
 
-class ItemsController
+class ListController
 {
     private $listRepository;
     private $itemsRepository;
@@ -61,10 +61,23 @@ class ItemsController
 
     public function postMoveItem($id, $direction)
     {
-        Storage::move(intval($id), $direction);
+        $allowedMoves = ['up', 'down'];
+        $numericId = intval($id);
+        if ($direction === $allowedMoves[0])
+        {
+            $this->listRepository->moveItemUp($numericId);
+        }
+        else if ($direction === $allowedMoves[1])
+        {
+            $this->listRepository->moveItemDown($numericId);
+        }
         return new RedirectResponseModel(Router::$homePageAddress);
     }
 
+    /**
+     * sort items by position ascending
+     * @param $data
+     */
     private function sortByPosition(&$data)
     {
         usort($data, function ($a, $b)

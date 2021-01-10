@@ -32,14 +32,14 @@
                     <td id="<?= htmlspecialchars($nameCellId) ?>"><?= htmlspecialchars($item->name) ?></td>
                     <td id="<?= htmlspecialchars($amountCellId) ?>"><?= htmlspecialchars($item->amount) ?></td>
                     <td>
-                        <form method="post" action="?action=Items/MoveItem">
+                        <form method="post" action="?action=List/MoveItem">
                             <input type="hidden" name="id" value="<?= htmlspecialchars($itemId) ?>">
                             <input type="hidden" name="direction" value="up">
                             <input type="submit" value="MOVE UP">
                         </form>
                     </td>
                     <td>
-                        <form method="post" action="?action=Items/MoveItem">
+                        <form method="post" action="?action=List/MoveItem">
                             <input type="hidden" name="id" value="<?= htmlspecialchars($item->id) ?>">
                             <input type="hidden" name="direction" value="down">
                             <input type="submit" value="MOVE DOWN">
@@ -62,7 +62,7 @@
         <h3>Editing item</h3>
         <div id="editItemName"></div>
         <div>old amount: <span id="editItemAmount"></span></div>
-        <form method="post" action="?action=Items/ItemUpdate">
+        <form method="post" action="?action=List/ItemUpdate">
             <input type="hidden" name="id" id="editItemId"/>
             <input type="number" name="newAmount"/>
             <input type="submit" value="Submit"/>
@@ -71,7 +71,7 @@
     </div>
 
     <h3>Add item</h3>
-    <form method="post" action="?action=Items/Item">
+    <form method="post" action="?action=List/Item">
         <input type="text" name="name" list="itemsDatalist"/>
         <datalist id="itemsDatalist">
             <?php

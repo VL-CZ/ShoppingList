@@ -13,16 +13,25 @@ abstract class ResponseModel
         $this->data = $data;
     }
 
+    /**
+     * check if the response is redirect
+     */
     public function isRedirect()
     {
         return false;
     }
 
+    /**
+     * check if the response is JSON
+     */
     public function isJson()
     {
         return false;
     }
 
+    /**
+     * get data for response
+     */
     public function getData()
     {
         return $this->data;

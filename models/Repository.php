@@ -87,12 +87,17 @@ class ListItemsRepository extends Repository
      */
     public function deleteById($id)
     {
+        $position = $this->getPositionById($id);
+
         $statement = $this->db->prepare('DELETE FROM list WHERE list.id=:id');
         $statement->bindParam(':id', $id);
         $result = $statement->execute();
 
         // TODO error check
         // if ($result === false)
+
+        // decrement following positions
+        $this->decrementPositionsAfter($position);
     }
 
     /**
@@ -108,15 +113,46 @@ class ListItemsRepository extends Repository
         $result = $statement->execute();
     }
 
+    public function moveItemUp($id)
+    {
+        $this->moveItem($id, true);
+    }
+
+    public function moveItemDown($id)
+    {
+        $this->moveItem($id, false);
+    }
+
     /**
      * get maximal value of position column of the list items
-     * @return int|mixed
+     * @return int
      */
     private function getMaxPosition()
     {
         $result = $this->db->query('SELECT MAX(list.position) FROM list');
         $maxPosition = $result->fetchColumn();
-        return $maxPosition;
+        return intval($maxPosition);
+    }
+
+    /**
+     * move item position up/down
+     * @param $id
+     * @param $isMoveUp bool true = up, false = down
+     */
+    private function moveItem($id, $isMoveUp)
+    {
+        $position = $this->getPositionById($id);
+        $shift = $isMoveUp ? -1 : 1;
+        $otherItemPosition = $position + $shift;
+
+        $otherItemId = $this->getIdByPosition($otherItemPosition);
+
+        if (!is_null($otherItemId))
+        {
+            // swap positions with the following item
+            $this->updatePosition($id, $otherItemPosition);
+            $this->updatePosition($otherItemId, $position);
+        }
     }
 
     /**
@@ -132,6 +168,68 @@ class ListItemsRepository extends Repository
         $record = $result[0];
 
         return intval($record['id']);
+    }
+
+    /**
+     * get position of the item with selected id
+     * @param $id
+     * @return int
+     */
+    private function getPositionById($id)
+    {
+
+        $statement = $this->db->prepare('SELECT list.position FROM list WHERE list.id=:id');
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+
+        $position = $statement->fetchColumn();
+        return intval($position);
+    }
+
+    /**
+     * decrement by one positions after selected position
+     * @param $position
+     */
+    private function decrementPositionsAfter($position)
+    {
+        $statement = $this->db->prepare('UPDATE list SET list.position=list.position-1 WHERE list.position > :position');
+        $statement->bindParam(':position', $position);
+        $statement->execute();
+    }
+
+    /**
+     * get list item Id by its position
+     * @return int or NULL if not found
+     */
+    private function getIdByPosition($position)
+    {
+        $statement = $this->db->prepare('SELECT list.id FROM list WHERE list.position=:position');
+        $statement->bindParam(':position', $position);
+        $statement->execute();
+
+        if ($statement->rowCount() > 0)
+        {
+            $id = $statement->fetchColumn();
+            return intval($id);
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    /**
+     * update position of the item with selected ID
+     * @param $id
+     * @param $newPosition
+     */
+    private function updatePosition($id, $newPosition)
+    {
+        $statement = $this->db->prepare('UPDATE list SET list.position=:newPosition WHERE list.id=:id');
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':newPosition', $newPosition);
+        $result = $statement->execute();
     }
 }
 

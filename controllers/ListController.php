@@ -3,11 +3,13 @@ require_once __DIR__ . '/../models/ShoppingListItem.php';
 require_once __DIR__ . '/../models/ResponseModel.php';
 require_once __DIR__ . '/../router.php';
 require_once __DIR__ . '/../models/Repository.php';
+require_once __DIR__ . '/../models/DataValidator.php';
 
 class ListController
 {
     private $listRepository;
     private $itemsRepository;
+    private $validator;
 
     /**
      * ItemsController constructor
@@ -16,6 +18,7 @@ class ListController
     {
         $this->listRepository = new ListItemsRepository();
         $this->itemsRepository = new ItemsRepository();
+        $this->validator = new DataValidator();
     }
 
     /**
@@ -42,6 +45,9 @@ class ListController
      */
     public function postItem($name, $amount)
     {
+        if (!$this->validator->isPositiveInteger($amount))
+            throw new InvalidArgumentException();
+
         $listItem = new ShoppingListItem(0, $name, intval($amount), 0);
 
         $this->itemsRepository->tryToAddName($name);
@@ -59,13 +65,16 @@ class ListController
      */
     public function postItemUpdate($id, $newAmount)
     {
+        if (!$this->validator->isPositiveInteger($newAmount) || !$this->validator->isPositiveInteger($id))
+            throw new InvalidArgumentException();
+
         $this->listRepository->updateAmount(intval($id), intval($newAmount));
         return new RedirectResponseModel(Router::$homePageAddress);
     }
 
     /**
      * DELETE: List/Item?id={id}
-     * DELETE selected item
+     * delete selected item by id
      * @param $id
      * @return JsonErrorResponseModel|JsonOkResponseModel
      */
@@ -73,12 +82,15 @@ class ListController
     {
         try
         {
+            if (!$this->validator->isPositiveInteger($id))
+                throw new InvalidArgumentException();
+
             $this->listRepository->deleteById(intval($id));
             return new JsonOkResponseModel(null);
         }
         catch (Exception $e)
         {
-            return new JsonErrorResponseModel("Error while deleting a user");
+            return new JsonErrorResponseModel("Error while deleting a user.");
         }
     }
 
@@ -92,6 +104,9 @@ class ListController
     public function postMoveItem($id, $direction)
     {
         $allowedMoves = ['up', 'down'];
+        if (!$this->validator->isPositiveInteger($id) || !in_array($direction, $allowedMoves))
+            throw new InvalidArgumentException();
+
         $numericId = intval($id);
         if ($direction === $allowedMoves[0])
         {

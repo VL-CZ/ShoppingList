@@ -4,6 +4,7 @@ class Router
 {
     private $requestParamArrays = [];
     public static $homePageAddress = '?action=List/Items';
+    public static $errorPageAddress = '?action=Error/Error';
 
     /**
      * Router constructor.
@@ -137,7 +138,7 @@ class Router
         }
         catch (Exception $exception)
         {
-            http_response_code(500);
+            $this->redirectTo(self::$errorPageAddress);
         }
     }
 

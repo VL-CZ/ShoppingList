@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Shopping List</title>
-    <link rel="stylesheet" href="styles/style.css" type="text/css"/>
-    <script src="scripts/script.js"></script>
-</head>
 <body>
     <h2>Shopping list</h2>
     <div>
@@ -88,5 +80,6 @@
         <input type="number" name="amount" min="1"/>
         <input type="submit" value="Submit"/>
     </form>
+
+    <script src="scripts/script.js"></script>
 </body>
-</html>

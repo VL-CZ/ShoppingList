@@ -133,8 +133,13 @@ class Router
                 // return JSON data
                 echo json_encode($data);
             }
+            else if ($responseModel->isHtml())
+            {
+                // render HTML page
+                $data->render();
+            }
             else
-                throw new Exception("Invalid return type");
+                throw new HttpResponseException("Invalid return type");
         }
         catch (Exception $exception)
         {

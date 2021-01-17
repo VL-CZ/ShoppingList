@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/JsonResponseObject.php';
+require_once __DIR__ . '/HtmlResponseObject.php';
 
 abstract class ResponseModel
 {
@@ -25,6 +26,14 @@ abstract class ResponseModel
      * check if the response is JSON
      */
     public function isJson()
+    {
+        return false;
+    }
+
+    /**
+     * check if the response is HTML page
+     */
+    public function isHtml()
     {
         return false;
     }
@@ -91,5 +100,23 @@ class JsonErrorResponseModel extends JsonResponseModel
     {
         parent::__construct();
         $this->data->setError($error);
+    }
+}
+
+class HtmlResponseModel extends ResponseModel
+{
+    /**
+     * HtmlResponseModel constructor.
+     * @param $templateFile
+     * @param $params
+     */
+    public function __construct($templateFile, $params)
+    {
+        parent::__construct(new HtmlResponseObject($templateFile, $params));
+    }
+
+    public function isHtml()
+    {
+        return true;
     }
 }

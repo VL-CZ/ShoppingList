@@ -30,10 +30,12 @@ class ListController
         $listItems = $this->listRepository->getAll();
         $this->sortByPosition($listItems);
 
-        $allItems = $this->itemsRepository->getAll();
+        $params = [
+            'listItems' => $listItems,
+            'allItems' => $this->itemsRepository->getAll()
+        ];
 
-        require __DIR__ . '/../templates/home.php';
-        die();
+        return new HtmlResponseModel('home', $params);
     }
 
     /**

@@ -38,7 +38,7 @@
                         </form>
                     </td>
                     <td>
-                        <button class="editItemButton" data-id="<?= htmlspecialchars($item->id) ?>">UPDATE</button>
+                        <button class="editItemButton" data-id="<?= htmlspecialchars($item->id) ?>">EDIT</button>
                     </td>
                     <td>
                         <button class="deleteItemButton" data-id="<?= htmlspecialchars($item->id) ?>">DELETE</button>
@@ -56,7 +56,10 @@
         <div>old amount: <span id="editItemAmount"></span></div>
         <form method="post" action="?action=List/ItemUpdate">
             <input type="hidden" name="id" id="editItemId"/>
-            <input type="number" name="newAmount" min="1"/>
+
+            <label for="editItemNewAmount">New amount:</label><br>
+            <input type="number" name="newAmount" min="1" required id="editItemNewAmount"/> <br>
+
             <input type="submit" value="Submit"/>
         </form>
         <button id="cancelEditButton">Cancel</button>
@@ -64,7 +67,9 @@
 
     <h3>Add item</h3>
     <form method="post" action="?action=List/Item">
-        <input type="text" name="name" list="itemsDatalist" />
+
+        <label for="newItemName">Item:</label><br>
+        <input type="text" name="name" list="itemsDatalist" required id="newItemName"/> <br>
         <datalist id="itemsDatalist">
             <?php
             foreach ($allItems as $item)
@@ -77,7 +82,10 @@
                 }
                 ?>
         </datalist>
-        <input type="number" name="amount" min="1"/>
+
+        <label for="newItemAmount">Amount:</label><br>
+        <input type="number" name="amount" min="1" required id="newItemAmount"/><br>
+
         <input type="submit" value="Submit"/>
     </form>
 

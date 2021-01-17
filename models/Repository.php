@@ -93,9 +93,6 @@ class ListItemsRepository extends Repository
         $statement->bindParam(':id', $id);
         $result = $statement->execute();
 
-        // TODO error check
-        // if ($result === false)
-
         // decrement following positions
         $this->decrementPositionsAfter($position);
     }
@@ -173,7 +170,7 @@ class ListItemsRepository extends Repository
     /**
      * get position of the item with selected id
      * @param $id
-     * @return int
+     * @return int position of the item with selected ID, or throws InvalidArgumentException if the item doesn't exist
      */
     private function getPositionById($id)
     {
@@ -183,7 +180,11 @@ class ListItemsRepository extends Repository
         $statement->execute();
 
         $position = $statement->fetchColumn();
-        return intval($position);
+
+        if ($position === false)
+            throw new InvalidArgumentException("Item with ID; ${id} doesn't exist");
+        else
+            return intval($position);
     }
 
     /**

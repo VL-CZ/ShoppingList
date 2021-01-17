@@ -17,6 +17,6 @@ class DataValidator
      */
     public function isPositiveInteger($variable)
     {
-        return is_int($variable) && intval($variable) > 0;
+        return is_numeric($variable) && intval($variable) > 0;
     }
 }

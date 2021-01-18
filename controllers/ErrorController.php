@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . '/../models/ResponseModel.php';
 
 class ErrorController
 {
@@ -9,7 +9,6 @@ class ErrorController
      */
     public function getError()
     {
-        require __DIR__ . '/../templates/error.php';
-        exit();
+        return new HtmlResponseModel('error', []);
     }
 }
